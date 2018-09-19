@@ -277,6 +277,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/Lambda表达式的使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="薛定谔的狗">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/19/Lambda表达式的使用/" itemprop="url">
+                  lambda表达式的使用
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-19 21:49:13 / 修改时间：21:50:27" itemprop="dateCreated datePublished" datetime="2018-09-19T21:49:13+08:00">2018-09-19</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="Lambda表达式的作用"><a href="#Lambda表达式的作用" class="headerlink" title="Lambda表达式的作用"></a>Lambda表达式的作用</h2><p>Java8中提出的lambda表达式可以使得我们的代码编写更加简洁。<br><strong>Lambda表达式本身可以看作是一个接口的实现。</strong></p>
+<ul>
+<li>使用场景：<br>  在Java代码编写过程中，有时候需要我们把一整块代码赋值给一个变量，用Lambda表达式使得代码更简洁。</li>
+</ul>
+<h2 id="Lambda表达式的语法"><a href="#Lambda表达式的语法" class="headerlink" title="Lambda表达式的语法"></a>Lambda表达式的语法</h2><ul>
+<li>(parameters) -&gt; expression</li>
+<li>(parameters) -&gt; {statements;}</li>
+</ul>
+<h2 id="常见Lambda表达式的例子"><a href="#常见Lambda表达式的例子" class="headerlink" title="常见Lambda表达式的例子"></a>常见Lambda表达式的例子</h2><p>1.在new一个匿名内部类(接口)，需要重写其方法的时候。例如往Collection.sort()中传入一个Comparator比较器对象，常见写法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Collections.sort(list, new Comparator&lt;Person&gt;() &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public int compare(Person o1, Person o2) &#123;</span><br><span class="line">        return o1.age - o2.age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>使用Lambda表达式之后：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Collections.sort(list, (o1,o2)-&gt;(o2.age - o1.age));</span><br></pre></td></tr></table></figure></p>
+<p>参考：<br><img src="https://pic4.zhimg.com/80/v2-a712753b42972e094a548ae02fa82987_hd.jpg" alt="image"></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/Trie字典树的介绍与Java实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -974,7 +1125,7 @@ private Node maximun(Node node) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-count">5</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -991,7 +1142,9 @@ private Node maximun(Node node) {
                     
                       
                     
-                    <span class="site-state-item-count">1</span>
+                      
+                    
+                    <span class="site-state-item-count">2</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
