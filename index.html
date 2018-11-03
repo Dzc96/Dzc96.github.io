@@ -277,6 +277,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/DNS劫持和HTTP劫持/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="薛定谔的狗">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/03/DNS劫持和HTTP劫持/" itemprop="url">
+                  DNS劫持和HTTP劫持
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-03 21:23:53 / 修改时间：21:30:41" itemprop="dateCreated datePublished" datetime="2018-11-03T21:23:53+08:00">2018-11-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="DNS劫持和HTTP劫持的现象"><a href="#DNS劫持和HTTP劫持的现象" class="headerlink" title="DNS劫持和HTTP劫持的现象"></a>DNS劫持和HTTP劫持的现象</h1><p>DNS劫持的现象：<br>  输入网址是<a href="http://www.google.com，显示的是www.baidu.com" target="_blank" rel="noopener">www.google.com，显示的是www.baidu.com</a>  </p>
+<p>HTTP劫持的现象：<br>输入网址是<a href="http://www.google.com，显示的也是谷歌首页，但是页面某个地方出现了广告。" target="_blank" rel="noopener">www.google.com，显示的也是谷歌首页，但是页面某个地方出现了广告。</a></p>
+<h1 id="DNS劫持和HTTP劫持的原理"><a href="#DNS劫持和HTTP劫持的原理" class="headerlink" title="DNS劫持和HTTP劫持的原理"></a>DNS劫持和HTTP劫持的原理</h1><ul>
+<li><p>DNS劫持原理：DNS服务器修改域名对应的解析地址，把这个域名解析到另一个IP地址上。</p>
+</li>
+<li><p>HTTP劫持原理：HTTP劫持，运营商或中间人修改http响应的内容(比如修改HTML代码，加入js代码)，使得页面出现广告等情况。</p>
+<blockquote>
+<p>具体来说：HTTP请求到达运营商路由器后被标记，响应到达运营商路由器的时候，修改返回的响应内容，插入广告等，直接返回修改后的响应，它会先到达客户端。真正的响应到达客户端后就会被丢弃。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="如何解决DNS劫持和HTTP劫持"><a href="#如何解决DNS劫持和HTTP劫持" class="headerlink" title="如何解决DNS劫持和HTTP劫持"></a>如何解决DNS劫持和HTTP劫持</h1><ul>
+<li><p>解决DNS劫持： 换一下可靠的DNS服务器。</p>
+</li>
+<li><p>解决HTTP劫持：全站用HTTPS。<br>因为客户端和服务器来往的数据是加密过的，运营商或中间人无法直接修改服务器返回的响应(比如无法修改HTML代码，插入js代码)。</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/03/浅谈单例模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1321,7 +1477,7 @@ private Node maximun(Node node) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">6</span>
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1340,7 +1496,9 @@ private Node maximun(Node node) {
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                    <span class="site-state-item-count">3</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
