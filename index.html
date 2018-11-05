@@ -277,6 +277,200 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/05/浅谈Java类加载/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="薛定谔的狗">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/05/浅谈Java类加载/" itemprop="url">
+                  浅谈Java类加载
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-05 15:16:43 / 修改时间：15:17:15" itemprop="dateCreated datePublished" datetime="2018-11-05T15:16:43+08:00">2018-11-05</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="类加载的过程"><a href="#类加载的过程" class="headerlink" title="类加载的过程"></a>类加载的过程</h1><h2 id="什么是类加载"><a href="#什么是类加载" class="headerlink" title="什么是类加载"></a>什么是类加载</h2><p>我们写的每个类即.java文件，都会被编译器编译为.class字节码文件。   </p>
+<p>当Java程序需要使用某个类的时候，就去加载它的.class字节码文件到JVM，在JVM的方法区保存类的基本结构，在堆中创建对应的java.lang.Class对象。</p>
+<h2 id="类加载的过程-1"><a href="#类加载的过程-1" class="headerlink" title="类加载的过程"></a>类加载的过程</h2><p>加载–&gt;链接–&gt;初始化  </p>
+<p>(链接还可以进行细分：验证–&gt;准备–&gt;解析)  </p>
+<p>所以，总体来看类的加载过程可以分为五个步骤：<br>加载–&gt;验证–&gt;准备–&gt;解析–&gt;初始化</p>
+<ol>
+<li>加载：根据类的全名去找到对应的二进制字节流，可以从本地、网络等地方获取。  把字节流代表的静态存储结构转化为方法区的运行时数据结构。<br>创建表示该类型的java.lang.Class类型的对象，通过它可以访问类在方法区的基本结构(比如方法、字段等，这也是反射的基础)。</li>
+<li>验证：检查字节码文件的格式，语义等，确保字节码文件加载后不会危害JVM运行。</li>
+<li>准备：在方法区中为静态变量分配内存空间，并进行默认初始化(例如int类型就默认初始化为0，boolean类型就默认初始化为false)。</li>
+<li>解析：把字节码文件中的符号引用转换为直接引用。比如这个符号代表方法、字段等，那就把这个符号转为了它们在内存中的指针或偏移量，方便直接访问)</li>
+<li>初始化：把类中所有被static关键字修饰的代码都执行一遍。即把用户指定的值赋值给静态变量，执行静态代码块的代码。<br>所有被static关键字修饰的代码在编译的时候会被放到一个叫做<clinit>的方法中，在类加载到[初始化]这个阶段的时候，由JVM调用这个<clinit>方法。<br>如果加载的这个类有父类，那么JVM会确保先调用父类的<clinit>方法，再调用子类的<clinit>方法。<br>如果多线程同时初始化一个类，JVM会确保只有一个线程可以执行类的<clinit>方法，而且只能执行一次。<blockquote>
+<p>这个特性，也是饿汉式单例模式为什么不用synchronized也能保证线程安全的原因，因为唯一实例用static修饰，这些代码会放在<clinit>方法中并由JVM调用。即便在多线程环境下，也只执行一次创建实例的代码。</clinit></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private static Singleton instance = new Singleton();</span><br></pre></td></tr></table></figure>
+</blockquote>
+</clinit></clinit></clinit></clinit></clinit></li>
+</ol>
+<h1 id="类加载器的层次结构"><a href="#类加载器的层次结构" class="headerlink" title="类加载器的层次结构"></a>类加载器的层次结构</h1><ul>
+<li>Boostrap ClassLoader  顶层的启动类加载器： 加载JAVA_HOME/lib 加载这里的核心类库(比如rt.jar) 。它不是Java类，是用C++写的， 嵌在JVM内核里面，JVM启动的时候它就存在了</li>
+<li>Extension ClassLoader 扩展类加载器：  加载JAVA_HOME/lib/ext下的类库</li>
+<li>Application ClassLoader 应用程序类加载器：  加载classpath下的类库</li>
+<li>继承java.lang.ClassLoader的自定义类加载器  </li>
+</ul>
+<blockquote>
+<p>除了顶层的Boostrap启动类加载器，其他的类加载器都有自己的父类加载器，但它们不是通常所说的继承关系。<br>Boostap启动类加载器用C++实现，是虚拟机自身的一部分。其他的类加载器由Java实现，独立于虚拟机，这些类加载器都继承自抽象类java.lang.ClassLoader</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public abstract class ClassLoader</span><br></pre></td></tr></table></figure>
+<p>代码验证：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class ClassLoaderDemo &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		ClassLoaderDemo classLoader = new ClassLoaderDemo();</span><br><span class="line">		Class clazz = classLoader.getClass();</span><br><span class="line">		System.out.println(&quot;加载当前类的Application类加载器:&quot; + clazz.getClassLoader());</span><br><span class="line">		System.out.println(&quot;Application类加载器的父类加载器:&quot; + clazz.getClassLoader().getParent());</span><br><span class="line">		System.out.println(&quot;Extension类加载器的父类加载器:&quot; + clazz.getClassLoader().getParent().getParent());</span><br><span class="line">		//因为Bootstrap类加载器是C++写的，不是java类，所以这里是获取不到Bootstrap类加载器的，返回的是null</span><br><span class="line">	&#125;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line">运行结果：</span><br><span class="line">加载当前类的Application类加载器:sun.misc.Launcher$AppClassLoader@73d16e93</span><br><span class="line">Application类加载器的父类加载器:sun.misc.Launcher$ExtClassLoader@15db9742</span><br><span class="line">Extension类加载器的父类加载器:null</span><br></pre></td></tr></table></figure>
+<h1 id="双亲委派机制"><a href="#双亲委派机制" class="headerlink" title="双亲委派机制"></a>双亲委派机制</h1><h2 id="双亲委派机制的工作原理"><a href="#双亲委派机制的工作原理" class="headerlink" title="双亲委派机制的工作原理"></a>双亲委派机制的工作原理</h2><p>简单来说，双亲委派机制的工作原理就是：<strong>父类优先加载</strong>  </p>
+<p>如果一个类加载器收到类加载请求，它不会立即加载，而是把加载请求传给父类加载器，父类加载器再传给它的父类加载器，一层一层传递，最后所有的加载请求都会先到达最顶层的Bootstrap启动类加载器。<br>如果父类加载器能加载，那就加载。如果它加载不了，就会一层一层往下通知，让子类加载器去加载。</p>
+<blockquote>
+<p>比如我们自己写一个带main方法的类，然后编译,运行这个类。它会被加载进JVM。<br>首先Application类加载器会收到加载请求，它把请求传给父类Extension类加载器，Extension类加载器则把请求再交给最顶层的Bootstrap类加载器。<br>Bootstrap类加载器尝试加载，去JAVA_HOME/lib目录下查找这个类的字节码文件，找不到。则通知子类Extension类加载器去加载。<br>Extension类加载器去JAVA_HOME/lib/ext目录下查找这个类的字节码文件，也找不到，则通知Application类加载器去加载。<br>Application类加载器去classpath下查找这个类的字节码文件，找到了，然后加载到JVM中。</p>
+</blockquote>
+<h2 id="双亲委派机制的好处"><a href="#双亲委派机制的好处" class="headerlink" title="双亲委派机制的好处"></a>双亲委派机制的好处</h2><ol>
+<li>避免类的重复加载：<br>因为在加载之前都会先判断父类加载器有没有加载过，加载过那就不加载了。</li>
+<li>确保核心类库的安全：<br>如果有人自己写了一个全名是java.lang.Object的类，通过双亲委派机制加载时，会先让顶层Bootstrap类加载器先加载，它去查对应的加载路径JAVA_HOME/lib，发现核心类库有java.lang.Object这个类，那就加载这个类，而不是加载用户自定义的同名核心类，确保了Java核心类库的安全，不会影响Java程序的运行。</li>
+</ol>
+<h1 id="类与类加载器"><a href="#类与类加载器" class="headerlink" title="类与类加载器"></a>类与类加载器</h1><h2 id="类什么时候初始化"><a href="#类什么时候初始化" class="headerlink" title="类什么时候初始化"></a>类什么时候初始化</h2><p>虚拟机规范规定，有且只有5种情况必须立即对类进行初始化(此时已经完成了加载、验证、准备、解析阶段)：</p>
+<ol>
+<li>使用new关键字创建对象、访问一个类的静态字段或静态方法(被final修饰的静态字段除外)</li>
+<li>使用java.lang.reflect包的方法对类进行反射，若类没进行初始化，要先初始化</li>
+<li>初始化一个类时，如果它的父类还没初始化，那么要先初始化父类</li>
+<li>虚拟机启动的时候，先初始化带main()方法的主类</li>
+<li>当使用JDK1.7的动态语言支持时，如果一个java.lang.invoke.MethodHandle实例最后的解析结果REF_getStatic等时， 这个方法的类还没有进行过初始化，则需要先触发其初始化。</li>
+</ol>
+<blockquote>
+<p>注意：<br>类的实例化和类的初始化不是一回事，是两个完全不同的概念！<br>类的实例化，是指在堆中分配内存，创建类的对象。<br>类的初始化，是指类加载时的一个阶段，负责给类的静态变量赋值，执行静态代码块。</p>
+</blockquote>
+<h2 id="JVM如何判断两个Class对象是否相同"><a href="#JVM如何判断两个Class对象是否相同" class="headerlink" title="JVM如何判断两个Class对象是否相同"></a>JVM如何判断两个Class对象是否相同</h2><ol>
+<li>类的完整类名必须一致(包名.类名)</li>
+<li>加载这个类的ClassLoader对象也必须一致<blockquote>
+<p>也就是说，即便这两个Class对象来源于同一个class字节码文件，但是由于加载它们的ClassLoader对象不同，JVM会认为这是两个不同的Class对象。</p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/04/HashMap源码分析/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1720,7 +1914,7 @@ private Node maximun(Node node) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
