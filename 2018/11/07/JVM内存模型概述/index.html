@@ -116,7 +116,7 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="JVM内存模型是什么(本文基于JDK1.8)   JVM内存模型也叫做JVM运行时数据区。JVM本身也是操作系统中的一个进程，操作系统自然会给它分配一定的内存空间，JVM在设计时对这个属于它自己的内存空间人为的划分为多个数据区域，使得JVM可以更好的运行Java程序。 JVM内存模型的组成部分JVM内存模型根据是否线程共享可分为两大区域。 线程共享堆 作用：存放对象实例，几乎所有的对象实例(包括数">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-11-07T09:35:20.004Z">
+<meta property="og:updated_time" content="2018-11-07T09:58:36.657Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JVM内存模型概述">
 <meta name="twitter:description" content="JVM内存模型是什么(本文基于JDK1.8)   JVM内存模型也叫做JVM运行时数据区。JVM本身也是操作系统中的一个进程，操作系统自然会给它分配一定的内存空间，JVM在设计时对这个属于它自己的内存空间人为的划分为多个数据区域，使得JVM可以更好的运行Java程序。 JVM内存模型的组成部分JVM内存模型根据是否线程共享可分为两大区域。 线程共享堆 作用：存放对象实例，几乎所有的对象实例(包括数">
@@ -323,7 +323,7 @@
                 
               
 
-              <time title="创建时间：2018-11-07 17:34:04 / 修改时间：17:35:20" itemprop="dateCreated datePublished" datetime="2018-11-07T17:34:04+08:00">2018-11-07</time>
+              <time title="创建时间：2018-11-07 17:34:04 / 修改时间：17:58:36" itemprop="dateCreated datePublished" datetime="2018-11-07T17:34:04+08:00">2018-11-07</time>
             
 
             
@@ -379,7 +379,7 @@
 </blockquote>
 </li>
 </ol>
-<h2 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h2><p>线程私有，是说每个线程都会有下面的三个内存区域：虚拟机栈、本地方法栈、程序计数器(PC)。</p>
+<h2 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h2><p>线程私有，是说每个线程都会有下面的三个东西：虚拟机栈、本地方法栈、程序计数器(PC)。</p>
 <h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><ol>
 <li>作用：虚拟机栈本质就是栈，它可以理解为Java的方法内存模型。线程在调用Java方法的时候，就会为这个方法创建一个栈帧(保存方法里的一些必要信息)， 然后栈帧入栈。方法执行完毕后，对应的栈帧就会出栈。<blockquote>
 <p>每个栈帧包括：局部变量表、操作数栈、动态链接、方法出口等信息</p>
@@ -410,7 +410,7 @@
 <p>如果是内存溢出，那就去设置虚拟机中最大堆内存(参数-Xmx)。</p>
 <h2 id="虚拟机栈中的SOF与OOM"><a href="#虚拟机栈中的SOF与OOM" class="headerlink" title="虚拟机栈中的SOF与OOM"></a>虚拟机栈中的SOF与OOM</h2><ol>
 <li>SOF<br>虚拟机栈中，存放的是每个方法对应的栈帧。如果一个线程里，嵌套调用了非常多方法，那么在方法没执行完返回的时候，虚拟机栈中就会有很多很多栈帧。<br>如果分配给虚拟机栈的内存被这些栈帧用完了，此时再去压入新的栈帧，JVM就会抛出StackOverFlowError(SOF)。<br>一般来说，递归的时候容易出现SOF。<br>如何解决呢？<br>设置虚拟机栈的容量(参数-Xss)</li>
-<li>OOM<br>在Java中创建一个新线程，JVM就会给这个线程分配一部分内存空间来放虚拟机栈，当不够内存来分配虚拟机栈时，JVM就会抛出StackOverFlowError(SOF)。</li>
+<li>OOM<br>在Java中创建一个新线程，JVM就会给这个线程分配一部分内存空间来放虚拟机栈，当不够内存来分配虚拟机栈时，JVM会抛出OutOfMemoryError，即OOM。</li>
 </ol>
 <h2 id="PC不会有OOM问题"><a href="#PC不会有OOM问题" class="headerlink" title="PC不会有OOM问题"></a>PC不会有OOM问题</h2><p>PC程序计数器不会有任何OutOfMemoryError问题。</p>
 
