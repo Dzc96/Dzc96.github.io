@@ -277,6 +277,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/15/CPU、进程、线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="薛定谔的狗">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/11/15/CPU、进程、线程/" itemprop="url">
+                  CPU、进程、线程
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-15 00:57:50 / 修改时间：00:58:52" itemprop="dateCreated datePublished" datetime="2018-11-15T00:57:50+08:00">2018-11-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="CPU的工作过程"><a href="#CPU的工作过程" class="headerlink" title="CPU的工作过程"></a>CPU的工作过程</h1><h2 id="CPU结构"><a href="#CPU结构" class="headerlink" title="CPU结构"></a>CPU结构</h2><p>CPU结构大体可分为三个主要部分：运算器，控制器，寄存器  </p>
+<p>运算器：做算术运算和逻辑运算  </p>
+<p>控制器：CPU的指挥中心，指挥CPU从内存（RAM）中取出需要的指令放到指令寄存器，并解码分析要进行什么操作。(注：内存中保存的就是指令和数据)  </p>
+<p>寄存器：就是空间比较小的存储器，用来保存CPU执行指令时涉及到的一些数据。采用寄存器可以减少CPU访问内存的次数，从而提高CPU的工作速度。</p>
+<h2 id="CPU的工作过程-1"><a href="#CPU的工作过程-1" class="headerlink" title="CPU的工作过程"></a>CPU的工作过程</h2><p>CPU不断的从内存中取出一条条指令和相应的数据，按照指令中的操作码，对数据进行运算处理。  </p>
+<p>再具体一点：  </p>
+<p>取指令–&gt;分析指令–&gt;执行指令—&gt;修改指令计数器</p>
+<p>取指令：CPU控制器从内存中取出一条指令，放入指令寄存器  </p>
+<p>分析指令：分析这个指令，要进行什么操作，指令的操作数在哪（注：指令=操作码+操作数地址）  </p>
+<p>执行指令：取操作数（CPU寻址操作，把内存中的操作数放到CPU的寄存器里，暂时保存），运算（运算器根据指令的操作码，对寄存器中的数据进行运算）  </p>
+<p>修改指令计数器：把计数器的值改成下一条指令的地址  </p>
+<h1 id="有了进程为什么还要线程"><a href="#有了进程为什么还要线程" class="headerlink" title="有了进程为什么还要线程"></a>有了进程为什么还要线程</h1><h2 id="进程和线程是什么"><a href="#进程和线程是什么" class="headerlink" title="进程和线程是什么"></a>进程和线程是什么</h2><p>首先，进程和线程是什么？  </p>
+<p>网上常见的一种说法：进程是资源分配的基本单位，线程是CPU执行的基本单位。或者用更简单的话来说，进程是“空间”，线程是”时间“。  </p>
+<p>怎么理解呢？对于CPU来说，进程是不可见的，它能”看到“的只有线程。  </p>
+<p>说起来很玄乎，其实这也是我在一开始就先讲CPU组成部件的原因，对于CPU来说，它就是拿到内存中的指令和数据，放到寄存器里，然后执行。  </p>
+<p>进程和线程的调度切换，实际上是操作系统做的事情。在我看来，CPU每次取的只是某个线程的指令和数据，所以说线程是CPU执行的基本单位。</p>
+<p>进程是程序的一次动态执行过程，在程序启动的时候，操作系统就分配资源（内存，I/O等），创建进程。  </p>
+<p>线程则是进程里的一条执行路径，一个进程可以有多个线程，这些线程可以共享进程的资源，每个进程都有自己独立的内存空间。所以多线程之间的通信和切换的性能开销会远远小于多进程的通信和切换。</p>
+<h2 id="为什么要有多线程"><a href="#为什么要有多线程" class="headerlink" title="为什么要有多线程"></a>为什么要有多线程</h2><p>假设一个进程只有一个线程，那么这个线程在执行到某个操作的时候，可能需要等待一段时间，此时进程其他的操作就没法执行了，用户体验可能会很差。  </p>
+<p>举个很典型的多线程的例子，Web服务器处理请求的过程：  </p>
+<p>①收到请求  </p>
+<p>②分析请求  </p>
+<p>③连接数据库或读取相关文件  </p>
+<p>④后台处理得到响应结果  </p>
+<p>⑤返回响应  </p>
+<p>假如一个进程里只有一个线程，那进程中所有操作的执行就要按照顺序从上到下一个一个来，上一步没执行，下一步也不会执行，但是很多时候，我们不需要等待上一步完成，就可以去执行下一步。  </p>
+<p>比如连接数据库和读取文件的操作，这是个比较花时间的操作（相对于CPU的执行速度），如果是单线程，那么此时CPU就要等待I/O执行完毕才去做其他事情，处于空闲状态，就没法最大化的利用CPU的计算能力了，我们肯定是希望CPU每时每刻都在执行指令的，这样系统的运行效率才高。  </p>
+<p>如果有了多线程，那么在连接数据库和读取文件的时候，就可以创建新线程去完成这个I/O操作，原来的线程继续执行不需要I/O的部分代码，等待I/O处理完的数据返回后，原线程拿到这些数据继续做处理，这样子就能提高服务器处理请求的效率，CPU也一直处于执行指令的状态。<br>换而言之，有了多线程，某个线程阻塞后，CPU不会闲置，而是会去处理其他线程。  </p>
+<p>而且现在多核处理器和多处理器的计算机已经普及，本身已经具备了同时执行多个线程来实现并行的能力，单线程没法完全发挥出计算机的计算能力。  </p>
+<p><strong>所以，引入多线程的目的，实际上是为了更充分的利用计算机的各种资源，提升程序的运行效率。</strong></p>
+<h1 id="CPU处理多线程的过程"><a href="#CPU处理多线程的过程" class="headerlink" title="CPU处理多线程的过程"></a>CPU处理多线程的过程</h1><p>一般来说，操作系统中的线程数是远远大于CPU核心数的，这就需要CPU去选择执行哪些线程，如何选择？  </p>
+<p>有一些调度算法，比如常见的时间片分配算法，CPU给每个线程都分配一定的执行时间，时间一到就要立马切换到另一个线程去执行。  </p>
+<p>多线程的切换就需要先保存当前线程的状态（上下文），因为要方便以后再切换回来让CPU继续往下执行。  </p>
+<p>比如说看英文书，看到不懂的单词就要去查字典，但是查字典前要记住这个单词在第几页第几行等信息，查完之后再回到这个单词的位置继续往下看。  </p>
+<p>切换线程时需要保存的状态(上下文)是什么？当前线程执行到第几条指令，当前线程正在处理的变量是什么等信息。  </p>
+<p><strong>总结：线程的上下文切换实际上就是存储和恢复CPU状态的过程，方便线程切换回来后从中断点继续执行。进程的上下文切换也同理。</strong></p>
+<h1 id="并行和并发的概念"><a href="#并行和并发的概念" class="headerlink" title="并行和并发的概念"></a>并行和并发的概念</h1><p>并发，在某个时间段内有多个线程执行。  </p>
+<p>并行，在某个时刻有多个线程同时执行。  </p>
+<p>在单核CPU的情况下，只有并发，它会把CPU运行时间划分为若干个时间段，把时间段分配个各个线程去执行，当某个线程被CPU执行的时候，其他的线程只能在一边等，因为只有一个CPU。  </p>
+<p>在多核CPU的情况下，可以有并行，每个CPU各自执行自己的线程，可以同时进行。  </p>
+<p>但实际上我们发现，即使在单核CPU的电脑上，我们也可以同时打开QQ，浏览器等一系列进程，那么内存中就有很多线程，如果说单核CPU每次只能执行一个线程，为什么看起来这些线程都在同时执行呢？  </p>
+<p><strong>因为CPU处理每个线程的时间非常短，也就是说切换线程的速度非常快，给人一种它在同时执行很多线程的错觉，但单核CPU在某一时刻，只能执行一个线程。</strong></p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/07/JVM内存模型概述/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1834,237 +2015,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/15/二分搜索树的Java实现/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="薛定谔的狗">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/09/15/二分搜索树的Java实现/" itemprop="url">
-                  二分搜索树的Java实现
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-09-15 18:42:11 / 修改时间：18:44:19" itemprop="dateCreated datePublished" datetime="2018-09-15T18:42:11+08:00">2018-09-15</time>
-            
-
-            
-              
-
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="本文目录"><a href="#本文目录" class="headerlink" title="本文目录"></a>本文目录</h2><ol>
-<li>BST二分搜索树和Node节点的定义</li>
-<li>BST中添加元素的方法</li>
-<li>判断二分搜索树中是否含有某个元素</li>
-<li>深度遍历优先之前中后序遍历</li>
-<li>前序遍历的非递归实现</li>
-<li>深度优先遍历</li>
-<li>查找最小，最大元素</li>
-<li>删除最小，最大元素</li>
-<li>删除BST中任意一个元素</li>
-</ol>
-<h3 id="1-BST二分搜索树和Node节点的定义"><a href="#1-BST二分搜索树和Node节点的定义" class="headerlink" title="1. BST二分搜索树和Node节点的定义"></a>1. BST二分搜索树和Node节点的定义</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public class BST&lt;E extends Comparable&lt;E&gt;&gt;  &#123;</span><br><span class="line"></span><br><span class="line">    //二分搜索树中定义一个Node类，表示树中的节点</span><br><span class="line">    private class Node &#123;</span><br><span class="line">        public E e;</span><br><span class="line">        public Node left, right;</span><br><span class="line"></span><br><span class="line">        public Node(E e) &#123;</span><br><span class="line">            this.e = e;</span><br><span class="line">            left = null;</span><br><span class="line">            right = null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //二分搜索树的属性，有根节点和所有节点的个数</span><br><span class="line">    private Node root;</span><br><span class="line">    private int size;</span><br><span class="line"></span><br><span class="line">    //BST的初始化</span><br><span class="line">    public BST() &#123;</span><br><span class="line">        root = null;</span><br><span class="line">        size = 0;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public int size() &#123;</span><br><span class="line">        return size;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public boolean isEmpty() &#123;</span><br><span class="line">        return size == 0;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2-BST中添加元素的方法"><a href="#2-BST中添加元素的方法" class="headerlink" title="2. BST中添加元素的方法"></a>2. BST中添加元素的方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//私有一个内部调用的add方法，这个add方法是递归的，不对用户暴露</span><br><span class="line">//传入根节点和新元素，完成对BST的添加元素的过程</span><br><span class="line">private void add(Node node, E e)&#123;</span><br><span class="line"></span><br><span class="line">    //递归终止条件</span><br><span class="line">    if (e.equals(node.e))</span><br><span class="line">        return;</span><br><span class="line">    else if (e.compareTo(node.e) &lt; 0 &amp;&amp; node.left == null) &#123;</span><br><span class="line">        node.left = new Node(e);</span><br><span class="line">        size++;</span><br><span class="line">        return;</span><br><span class="line">    &#125; else if (e.compareTo(node.e) &gt; 0 &amp;&amp; node.right == null) &#123;</span><br><span class="line">        node.right = new Node(e);</span><br><span class="line">        size++;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //递归的逻辑</span><br><span class="line">    if (e.compareTo(node.e) &lt; 0)</span><br><span class="line">        add(node.left, e);</span><br><span class="line">    else //e.compareTo(node.e) &gt; 0</span><br><span class="line">        add(node.right, e);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="对添加元素方法的改进"><a href="#对添加元素方法的改进" class="headerlink" title="对添加元素方法的改进"></a>对添加元素方法的改进</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * </span><br><span class="line">  * 当某个节点是NULL时，就添加新元素，并返回给上一层根节点的左节点或右节点</span><br><span class="line">  * 这样添加的新元素，也就和原二分搜索树挂接起来了</span><br><span class="line">  * 最终返回的是新二分搜索树的根节点root</span><br><span class="line"> */</span><br><span class="line"> private Node add(Node node, E e) &#123;</span><br><span class="line">     //递归终止条件</span><br><span class="line">     if (node == null) &#123;</span><br><span class="line">         size++;</span><br><span class="line">         return new Node(e);</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     //递归逻辑</span><br><span class="line">     if (e.compareTo(node.e) &lt; 0)</span><br><span class="line">         node.left = add(node.left, e);</span><br><span class="line">     else if (e.compareTo(node.e) &gt; 0)</span><br><span class="line">         node.right = add(node.right, e);</span><br><span class="line"></span><br><span class="line">     return node;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-判断二分搜索树中是否含有某个元素"><a href="#3-判断二分搜索树中是否含有某个元素" class="headerlink" title="3. 判断二分搜索树中是否含有某个元素"></a>3. 判断二分搜索树中是否含有某个元素</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">  * 判断二分搜索树中是否包含元素e,实际上仍然是使用递归算法</span><br><span class="line">  * 二分搜索树有天然的递归性，在左节点和右节点中递归寻找</span><br><span class="line">  * @param node</span><br><span class="line">  * @param e</span><br><span class="line">  * @return</span><br><span class="line">  */</span><br><span class="line"> private boolean contains(Node node, E e) &#123;</span><br><span class="line"></span><br><span class="line">     //递归终止条件</span><br><span class="line">     if (node == null)</span><br><span class="line">         return false;</span><br><span class="line"></span><br><span class="line">     //递归逻辑</span><br><span class="line">     if (e.compareTo(node.e) == 0)</span><br><span class="line">         return true;</span><br><span class="line">     else if (e.compareTo(node.e) &lt; 0)</span><br><span class="line">         return contains(node.left, e);</span><br><span class="line">     else //e.compareTo(node.e) &gt; 0</span><br><span class="line">         return contains(node.right, e);</span><br><span class="line"></span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="4-深度遍历优先之前中后序遍历"><a href="#4-深度遍历优先之前中后序遍历" class="headerlink" title="4. 深度遍历优先之前中后序遍历"></a>4. 深度遍历优先之前中后序遍历</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">public void preOrder() &#123;</span><br><span class="line">       preOrder(root);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 深度优先遍历之前序遍历，访问元素顺序：根左右</span><br><span class="line">    * 依然是采用递归实现</span><br><span class="line">    * @param node</span><br><span class="line">    */</span><br><span class="line">   private void preOrder(Node node) &#123;</span><br><span class="line">       //递归终止条件</span><br><span class="line">       if (node == null)</span><br><span class="line">           return;</span><br><span class="line"></span><br><span class="line">       //递归逻辑</span><br><span class="line">       System.out.println(node.e);</span><br><span class="line">       preOrder(node.left);</span><br><span class="line">       preOrder(node.right);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   public void inOrder() &#123;</span><br><span class="line">       inOrder(root);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 深度优先遍历之中序遍历，访问元素顺序：左根右</span><br><span class="line">    * 递归实现</span><br><span class="line">    * @param node</span><br><span class="line">    */</span><br><span class="line">   private void inOrder(Node node) &#123;</span><br><span class="line">       //递归终止条件</span><br><span class="line">       if (node == null)</span><br><span class="line">           return;</span><br><span class="line"></span><br><span class="line">       //递归逻辑</span><br><span class="line">       inOrder(node.left);</span><br><span class="line">       System.out.println(node.e);</span><br><span class="line">       inOrder(node.right);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public void postOrder() &#123;</span><br><span class="line">       postOrder(root);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 深度优先遍历之后序遍历，访问元素顺序：左右根</span><br><span class="line">    * 递归实现</span><br><span class="line">    * @param node</span><br><span class="line">    */</span><br><span class="line">   private void postOrder(Node node) &#123;</span><br><span class="line">       //递归终止条件</span><br><span class="line">       if (node == null)</span><br><span class="line">           return;</span><br><span class="line"></span><br><span class="line">       //递归逻辑</span><br><span class="line">       postOrder(node.left);</span><br><span class="line">       postOrder(node.right);</span><br><span class="line">       System.out.println(node.e);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="5-前序遍历的非递归实现"><a href="#5-前序遍历的非递归实现" class="headerlink" title="5. 前序遍历的非递归实现"></a>5. 前序遍历的非递归实现</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * 前序遍历的非递归实现</span><br><span class="line"> * 底层基于java.util.Stack的栈来实现</span><br><span class="line"> * 根节点压栈，然后出栈，出栈的同时，右节点-&gt;左节点再压栈，然后左节点-&gt;右节点出栈</span><br><span class="line"> */</span><br><span class="line">public void preOrderNR() &#123;</span><br><span class="line">    Stack&lt;Node&gt; stack = new Stack&lt;&gt;();</span><br><span class="line">    stack.push(root);</span><br><span class="line">    while (!stack.isEmpty()) &#123;</span><br><span class="line">        Node cur = stack.pop();</span><br><span class="line">        System.out.println(cur.e);</span><br><span class="line">        if (cur.right != null)</span><br><span class="line">            stack.push(cur.right);</span><br><span class="line">        if (cur.left != null)</span><br><span class="line">            stack.push(cur.left);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="6-深度优先遍历"><a href="#6-深度优先遍历" class="headerlink" title="6. 深度优先遍历"></a>6. 深度优先遍历</h3><pre><code>/**
- * 深度优先遍历之层序遍历
- * 底层基于Queue队列来实现
- * 根节点入队，然后出队，出队的同时，左节点-&gt;右节点再入队
- */
-public void leverOrder() {
-
-    if (root == null)
-        return;
-
-    Queue&lt;Node&gt; q = new LinkedList&lt;&gt;();
-    q.add(root);
-
-    while (!q.isEmpty()) {
-        Node cur = q.remove();
-        System.out.println(cur.e);
-
-        if (cur.left != null)
-            q.add(cur.left);
-        if (cur.right != null)
-            q.add(cur.right);
-    }
-
-}
-</code></pre><h3 id="7-查找最小，最大元素"><a href="#7-查找最小，最大元素" class="headerlink" title="7. 查找最小，最大元素"></a>7. 查找最小，最大元素</h3><pre><code>/**
- * 查找二分搜索树中，值最小的元素
- * @return
- */
-public E minimun() {
-    if (size == 0)
-        throw new IllegalArgumentException(&quot;BST is empty&quot;);
-
-    Node minNode = minimun(root);
-    return minNode.e;
-}
-
-/**
- * 查找最小值的操作是递归实现的
- * 根据二分搜索树的顺序性，最左边的某个没有左节点的元素，即为最小元素
- * @param node
- * @return
- */
-private Node minimun(Node node) {
-
-    //一直找到最左边的没有左节点的元素，并返回该元素
-    if (node.left == null)
-        return node;
-    return minimun(node.left);
-}
-
-
-
-
-public E maximun() {
-    if (size == 0)
-        throw new IllegalArgumentException(&quot;BST is empty&quot;);
-    return maximun(root).e;
-}
-
-/**
- * 查找最大值的操作是递归实现的
- * 根据二分搜索树的顺序性，最右边的某个没有右节点的元素，即为最大元素
- * @param node
- * @return
- */
-private Node maximun(Node node) {
-    if (node.right == null)
-        return node;
-    return  maximun(node.right);
-}
-</code></pre><h3 id="8-删除最小，最大元素"><a href="#8-删除最小，最大元素" class="headerlink" title="8. 删除最小，最大元素"></a>8. 删除最小，最大元素</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">public E removeMin() &#123;</span><br><span class="line">        E ret = minimun();</span><br><span class="line">        root = removeMin(root);</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 删除以node为根的二分搜索树中的最小节点</span><br><span class="line">     * 返回新二分搜索树的根节点</span><br><span class="line">     * @param node</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    private Node removeMin(Node node) &#123;</span><br><span class="line"></span><br><span class="line">        //递归终止条件</span><br><span class="line">        //当一个节点的左节点为空时，意味着这个节点就是最小值的节点</span><br><span class="line">        //这个结点如果是叶子节点，就返回null给上层根节点的左节点</span><br><span class="line">        //不是的话，就返回右子树给上层根节点的左节点</span><br><span class="line">        if (node.left == null) &#123;</span><br><span class="line">            Node rightNode = node.right;</span><br><span class="line">            node.right = null;</span><br><span class="line">            size--;</span><br><span class="line">            return rightNode;</span><br><span class="line">        &#125;</span><br><span class="line">        //递归逻辑</span><br><span class="line">        //返回来的结点可能是最小值元素的右子树或null</span><br><span class="line">        node.left = removeMin(node.left);</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public E removeMax() &#123;</span><br><span class="line">        E ret = maximun();</span><br><span class="line">        root = removeMax(root);</span><br><span class="line">        return ret;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * 删除以node为根的二分搜索树中的最大节点</span><br><span class="line">     * 返回新二分搜索树的根节点</span><br><span class="line">     * @param node</span><br><span class="line">     * @return</span><br><span class="line">     */</span><br><span class="line">    private Node removeMax(Node node) &#123;</span><br><span class="line">        //当一个节点的右节点为空时，则意味着这个节点就是最大节点</span><br><span class="line">        if (node.right == null) &#123;</span><br><span class="line">            Node leftNode = node.left;</span><br><span class="line">            node.left = null;</span><br><span class="line">            size--;</span><br><span class="line">            return  leftNode;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        //返回来的结点可能是最大值元素的左子树或null</span><br><span class="line">        node.right = removeMax(node.right);</span><br><span class="line">        return node;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<h3 id="9-删除BST中任意一个元素"><a href="#9-删除BST中任意一个元素" class="headerlink" title="9. 删除BST中任意一个元素"></a>9. 删除BST中任意一个元素</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 删除二分搜索树中的任意元素</span><br><span class="line">    * 返回新二分搜索树的根节点</span><br><span class="line">    * @param node</span><br><span class="line">    * @param e</span><br><span class="line">    * @return</span><br><span class="line">    */</span><br><span class="line">   private Node remove(Node node, E e) &#123;</span><br><span class="line">       if (node == null)</span><br><span class="line">           return null;</span><br><span class="line">       if (e.compareTo(node.e) &lt; 0) &#123;</span><br><span class="line">           node.left = remove(node.left , e);</span><br><span class="line">           return node;</span><br><span class="line">       &#125;</span><br><span class="line">       else if (e.compareTo(node.e) &gt; 0) &#123;</span><br><span class="line">           node.right = remove(node.right, e);</span><br><span class="line">           return node;</span><br><span class="line">       &#125;</span><br><span class="line">       else &#123; //e.compareTo(node.e) == 0 找到传入的这个元素了</span><br><span class="line">           //待删除元素的左子树为空的情况</span><br><span class="line">           if (node.left == null) &#123;</span><br><span class="line">               Node rightNode = node.right;</span><br><span class="line">               node.right = null;</span><br><span class="line">               size--;</span><br><span class="line">               return rightNode;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           //待删除元素的右子树为空的情况</span><br><span class="line">           if (node.right == null) &#123;</span><br><span class="line">               Node leftNode = node.left;</span><br><span class="line">               node.left = null;</span><br><span class="line">               size--;</span><br><span class="line">               return leftNode;</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">           //待删除元素的左右子树都不为空的情况,就需要找出新的根节点来代替待删除元素了</span><br><span class="line">           //这个新的根节点，根据二分搜索树的顺序性，就要求比左子树的所有元素值要大，右子树的所有元素值要小</span><br><span class="line">           //那我们就找出右子树的最小元素作为新的根节点，这就满足了上述条件</span><br><span class="line">           Node successor = minimun(node.right);</span><br><span class="line">           //successor是新的根节点，连接待删除元素的左右子树</span><br><span class="line">           successor.right = removeMin(node.right);//返回的是删除掉最小元素后的右子树的根节点</span><br><span class="line">           successor.left = node.left;</span><br><span class="line"></span><br><span class="line">           //断开待删除元素和其左右子树的关系</span><br><span class="line">           node.left = node.right = null;</span><br><span class="line"></span><br><span class="line">           //返回新二叉树的根节点</span><br><span class="line">           return successor;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
 
 
           </div>
@@ -2105,7 +2062,7 @@ private Node maximun(Node node) {
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2126,7 +2083,9 @@ private Node maximun(Node node) {
                     
                       
                     
-                    <span class="site-state-item-count">3</span>
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">标签</span>
                   
                 </div>
